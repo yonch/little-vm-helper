@@ -126,7 +126,7 @@ runs:
       shell: bash
       run: |
         # Disable auto update of man-db for every package
-        sudo rm /var/lib/man-db/auto-update
+        sudo rm /var/lib/man-db/auto-update || echo "No man-db auto-update file to remove (probably removed by a previous run)"
         # if there are files in /tmp/.ubuntu-pkgs, copy them to /var/cache/apt/archives/ and install them
         if ls /tmp/.ubuntu-pkgs/*.deb >/dev/null 2>&1; then
           sudo cp /tmp/.ubuntu-pkgs/*.deb /var/cache/apt/archives/
