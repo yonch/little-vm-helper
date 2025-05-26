@@ -128,7 +128,7 @@ runs:
         # Disable auto update of man-db for every package
         sudo rm /var/lib/man-db/auto-update
         # if there are files in /tmp/.ubuntu-pkgs, copy them to /var/cache/apt/archives/ and install them
-        if [ -f /tmp/.ubuntu-pkgs/*.deb ]; then
+        if ls /tmp/.ubuntu-pkgs/*.deb >/dev/null 2>&1; then
           sudo cp /tmp/.ubuntu-pkgs/*.deb /var/cache/apt/archives/
           sudo apt-get -y --no-install-recommends install /tmp/.ubuntu-pkgs/*.deb
         fi
