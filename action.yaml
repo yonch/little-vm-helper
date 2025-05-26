@@ -120,15 +120,18 @@ runs:
         done
         [ $success -eq 1 ] || exit 42
         sudo mkdir -p /tmp/.ubuntu-pkgs
-        sudo cp /var/cache/apt/archives/*.deb /tmp/.ubuntu-pkgs
+        sudo cp /var/cache/apt/archives/*.deb /tmp/.ubuntu-pkgs || echo "No deb files to copy to /tmp/.ubuntu-pkgs"
     - name: Install dependencies
       if: ${{ inputs.provision == 'true' && inputs.install-dependencies == 'true' }}
       shell: bash
       run: |
         # Disable auto update of man-db for every package
         sudo rm /var/lib/man-db/auto-update
-        sudo cp /tmp/.ubuntu-pkgs/*.deb /var/cache/apt/archives/
-        sudo apt-get -y --no-install-recommends install /tmp/.ubuntu-pkgs/*.deb
+        # if there are files in /tmp/.ubuntu-pkgs, copy them to /var/cache/apt/archives/ and install them
+        if [ -f /tmp/.ubuntu-pkgs/*.deb ]; then
+          sudo cp /tmp/.ubuntu-pkgs/*.deb /var/cache/apt/archives/
+          sudo apt-get -y --no-install-recommends install /tmp/.ubuntu-pkgs/*.deb
+        fi
         sudo kvm-ok
     - name: Derive VM image file name
       if: ${{ inputs.provision == 'true' }}
