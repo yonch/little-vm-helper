@@ -212,7 +212,7 @@ runs:
     - name: Run test cmd in VM
       shell: bash
       run: |
-        ssh -p ${{ inputs.ssh-port }} -o "StrictHostKeyChecking=no" root@localhost << EOF
+        ssh -p ${{ inputs.ssh-port }} -o "StrictHostKeyChecking=no" root@localhost << 'EOF'
         set -eu
 
         ${{ inputs.cmd }}
